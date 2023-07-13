@@ -68,98 +68,45 @@ namespace DatabaseConnectivity1
 
             SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.Connection = _connection;
-            sqlCommand.CommandText = "INSERT INTO EMPLOYEES (ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, SALARY, COMMISSION_PCT, MANAGER_ID, JOB_ID, DEPARTMENT_ID) VALUES (@id, @first_name, @last_name, @email, @phone_number, @hire_date, @salary, @commission_pct, @manager_id, @job_id, @department_id)";
+            sqlCommand.CommandText = "INSERT INTO employees(id, first_name, last_name, email, phone_number, hire_date, salary, " +
+           "commission_pct, manager_id, job_id, department_id)" +
+           "VALUES (@id, @first_name, @last_name, @email, @phone_number, @hire_date, @salary, @commission_pct, @manager_id, " +
+           "@job_id, @department_id)";
 
             _connection.Open();
-            using SqlTransaction transaction = _connection.BeginTransaction();
+            SqlTransaction transaction = _connection.BeginTransaction();
             sqlCommand.Transaction = transaction;
+
+            sqlCommand.Parameters.AddWithValue("@id", id);
+            sqlCommand.Parameters.AddWithValue("@first_name", first_name);
+            sqlCommand.Parameters.AddWithValue("@last_name", last_name);
+            sqlCommand.Parameters.AddWithValue("@email", email);
+            sqlCommand.Parameters.AddWithValue("@phone_number", phone_number);
+            sqlCommand.Parameters.AddWithValue("@hire_date", hire_date);
+            sqlCommand.Parameters.AddWithValue("@salary", salary);
+            sqlCommand.Parameters.AddWithValue("@commission_pct", commission_pct);
+            sqlCommand.Parameters.AddWithValue("@manager_id", manager_id);
+            sqlCommand.Parameters.AddWithValue("@job_id", job_id);
+            sqlCommand.Parameters.AddWithValue("@department_id", department_id);
 
             try
             {
-                //mendeklarasikan parameter
-                SqlParameter pId = new SqlParameter();
-                pId.ParameterName = "@id";
-                pId.SqlDbType = SqlDbType.VarChar;
-                pId.Value = id;
-                sqlCommand.Parameters.Add(pId);
-
-                SqlParameter pFirstName = new SqlParameter();
-                pFirstName.ParameterName = "@first_name";
-                pFirstName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pFirstName.Value = first_name;
-                sqlCommand.Parameters.Add(pFirstName);
-
-                SqlParameter pLastName = new SqlParameter();
-                pLastName.ParameterName = "@last_name";
-                pLastName.SqlDbType = System.Data.SqlDbType.Int;
-                pLastName.Value = last_name;
-                sqlCommand.Parameters.Add(pLastName);
-
-                SqlParameter pEmail = new SqlParameter();
-                pEmail.ParameterName = "@email";
-                pEmail.SqlDbType = SqlDbType.VarChar;
-                pEmail.Value = email;
-                sqlCommand.Parameters.Add(pEmail);
-
-                SqlParameter pPhoneNumber = new SqlParameter();
-                pPhoneNumber.ParameterName = "@phone_number";
-                pPhoneNumber.SqlDbType = System.Data.SqlDbType.VarChar;
-                pPhoneNumber.Value = phone_number;
-                sqlCommand.Parameters.Add(pPhoneNumber);
-
-                SqlParameter pHireDate = new SqlParameter();
-                pHireDate.ParameterName = "@hire_date";
-                pHireDate.SqlDbType = System.Data.SqlDbType.Int;
-                pHireDate.Value = hire_date;
-                sqlCommand.Parameters.Add(pHireDate);
-
-                SqlParameter pSalary = new SqlParameter();
-                pSalary.ParameterName = "@salary";
-                pSalary.SqlDbType = System.Data.SqlDbType.VarChar;
-                pSalary.Value = salary;
-                sqlCommand.Parameters.Add(pSalary);
-
-                SqlParameter pCommissionPct = new SqlParameter();
-                pCommissionPct.ParameterName = "@commission_pct";
-                pCommissionPct.SqlDbType = System.Data.SqlDbType.Int;
-                pCommissionPct.Value = commission_pct;
-                sqlCommand.Parameters.Add(pCommissionPct);
-
-                SqlParameter pManagerId = new SqlParameter();
-                pManagerId.ParameterName = "@manager_id";
-                pManagerId.SqlDbType = SqlDbType.VarChar;
-                pManagerId.Value = manager_id;
-                sqlCommand.Parameters.Add(pManagerId);
-
-                SqlParameter pJobId = new SqlParameter();
-                pJobId.ParameterName = "@job_id";
-                pJobId.SqlDbType = System.Data.SqlDbType.VarChar;
-                pJobId.Value = job_id;
-                sqlCommand.Parameters.Add(pJobId);
-
-                SqlParameter pDepartmentId = new SqlParameter();
-                pDepartmentId.ParameterName = "@department_id";
-                pDepartmentId.SqlDbType = System.Data.SqlDbType.Int;
-                pDepartmentId.Value = department_id;
-                sqlCommand.Parameters.Add(pDepartmentId);
-
                 int result = sqlCommand.ExecuteNonQuery();
                 if (result > 0)
                 {
-                    Console.WriteLine("Insert success.");
+                    Console.WriteLine("Insert succes");
                 }
                 else
                 {
-                    Console.WriteLine("Insert failed.");
+                    Console.WriteLine("Insert failed");
                 }
-
                 transaction.Commit();
                 _connection.Close();
             }
-            catch (Exception x)
+            catch (Exception ex)
             {
                 transaction.Rollback();
-                Console.WriteLine("Error connecting to the database. " + x.Message);
+                Console.WriteLine("Error! " + ex.Message);
             }
         }
 

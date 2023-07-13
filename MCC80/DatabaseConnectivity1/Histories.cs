@@ -57,20 +57,21 @@ namespace DatabaseConnectivity1
         }
 
         // INSERT HISTORIES
-        public static void InsertHistories(DateTime start_date, int employee_id, DateTime end_date, int departement_id, string job_id)
+        public static void InsertHistories(DateTime start_date, int employee_id, DateTime end_date,
+        int department_id, string job_id)
         {
             _connection = new SqlConnection(_connectionString);
 
             using SqlConnection connection = new SqlConnection(_connectionString);
-            string query = "insert into histories (start_date, employee_id, end_date, departement_id, job_id) values (@StartDate, @EmployeeId, @EndDate, @DepartmentId, @JobId)";
+            string query = "INSERT INTO histories (start_date, employee_id, end_date, department_id, job_id) VALUES (@StartDate, @EmployeeID, @EndDate, @DepartmentID, @JobID)";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@StartDate", start_date);
-                command.Parameters.AddWithValue("@EmployeeId", employee_id);
+                command.Parameters.AddWithValue("@EmployeeID", employee_id);
                 command.Parameters.AddWithValue("@EndDate", end_date);
-                command.Parameters.AddWithValue("@DepartmentId", departement_id);
-                command.Parameters.AddWithValue("@JobId", job_id);
+                command.Parameters.AddWithValue("@DepartmentID", department_id);
+                command.Parameters.AddWithValue("@JobID", job_id);
 
                 try
                 {
@@ -78,33 +79,36 @@ namespace DatabaseConnectivity1
                     int rowsAffected = command.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
-                        Console.WriteLine("Insert success.");
+                        Console.WriteLine("Histories record inserted successfully.");
                     }
                     else
                     {
-                        Console.WriteLine("Insert failed.");
+                        Console.WriteLine("Failed to insert histories record.");
                     }
                 }
-                catch (Exception x)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + x.Message);
+                    Console.WriteLine("Error: " + ex.Message);
                 }
             }
+        }
 
             //UPDATE HISTORIES
-            //public static void UpdateHistories(DateTime start_date, int employee_id, DateTime end_date, int departement_id, string job_id)
+            public static void UpdateHistories(DateTime start_date, int employee_id, DateTime end_date,
+        int department_id, string job_id)
             {
-                var _connection = new SqlConnection(_connectionString);
+                _connection = new SqlConnection(_connectionString);
 
                 SqlCommand sqlCommand = new SqlCommand();
                 sqlCommand.Connection = _connection;
-                sqlCommand.CommandText = "update histories set start_date = @start_date, end_date = @end_date, departement_id = @departement_id, job_id = @job_id WHERE employee_id = @employee_id";
+                sqlCommand.CommandText = "update histories set start_date = @start_date, job_id = @job_id, department_id = @department_id WHERE employee_id = @employee_id";
+
 
                 //Set paramaeter value
                 sqlCommand.Parameters.AddWithValue("@start_date", start_date);
                 sqlCommand.Parameters.AddWithValue("@employee_id", employee_id);
                 sqlCommand.Parameters.AddWithValue("@end_date", end_date);
-                sqlCommand.Parameters.AddWithValue("@departement_id", departement_id);
+                sqlCommand.Parameters.AddWithValue("@department_id", department_id);
                 sqlCommand.Parameters.AddWithValue("@job_id", job_id);
                 try
                 {
@@ -116,39 +120,40 @@ namespace DatabaseConnectivity1
                     }
                     else
                     {
-                        Console.WriteLine("No hitories found or no change made.");
+                        Console.WriteLine("No histories found or no change made.");
                     }
                 }
-                catch (Exception x)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error connecting to the database. " + x.Message);
+                    Console.WriteLine("Error connecting to the database. " + ex.Message);
                 }
             }
 
 
+
             //DELETE HISTORIES
-            //public static void DeleteHistories(DateTime start_date)
-            {
+            public static void DeleteHistories(int id)
+        {
                 _connection = new SqlConnection(_connectionString);
 
                 SqlCommand sqlCommand = new SqlCommand();
                 sqlCommand.Connection = _connection;
-                sqlCommand.CommandText = "DELETE FROM histories WHERE start_date = @start_date";
+                sqlCommand.CommandText = "Delete from histories where employee_id = (@Id)";
 
-                _connection.Open();
+            _connection.Open();
                 SqlTransaction transaction = _connection.BeginTransaction();
                 sqlCommand.Transaction = transaction;
 
                 try
                 {
-                    // Declare parameter
-                    SqlParameter pStartDate = new SqlParameter();
-                    pStartDate.ParameterName = "@start_date";
-                    pStartDate.SqlDbType = System.Data.SqlDbType.DateTime;
-                    pStartDate.Value = start_date;
-                    sqlCommand.Parameters.Add(pStartDate);
+                // Declare parameter
+                SqlParameter pId = new SqlParameter();
+                pId.ParameterName = "@Id";
+                pId.SqlDbType = SqlDbType.Int;
+                pId.Value = id;
+                sqlCommand.Parameters.Add(pId);
 
-                    int result = sqlCommand.ExecuteNonQuery();
+                int result = sqlCommand.ExecuteNonQuery();
                     if (result > 0)
                     {
                         Console.WriteLine("Delete success.");
@@ -161,52 +166,54 @@ namespace DatabaseConnectivity1
                     transaction.Commit();
                     _connection.Close();
                 }
-                catch
-                {
-                    transaction.Rollback();
-                    Console.WriteLine("Error connecting to the database.");
-                }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Console.WriteLine("Error! " + ex.Message);
             }
+        }
+
 
             //GET BY ID HISTORIES
-            //public static void GetHistoriesById(DateTime start_date)
-            {
+            public static void GetHistoriesById(int id)
+        {
                 _connection = new SqlConnection(_connectionString);
 
                 SqlCommand sqlCommand = new SqlCommand();
                 sqlCommand.Connection = _connection;
-                sqlCommand.CommandText = "SELECT * FROM histories WHERE start_date = @start_date";
-                sqlCommand.Parameters.AddWithValue("@start_date", start_date);
+            sqlCommand.CommandText = "SELECT * FROM histories WHERE employee_id = @Id";
+            sqlCommand.Parameters.AddWithValue("@Id", id);
 
-                try
+            try
+            {
+
+                _connection.Open();
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+
+                if (reader.HasRows)
                 {
-                    _connection.Open();
-                    using SqlDataReader reader = sqlCommand.ExecuteReader();
-
-                    if (reader.HasRows)
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            Console.WriteLine("Start Date: " + reader.GetDateTime(0));
-                            Console.WriteLine("Employee Id: " + reader.GetInt32(1));
-                            Console.WriteLine("End Date: " + reader.GetDateTime(2));
-                            Console.WriteLine("Department Id: " + reader.GetInt32(3));
-                            Console.WriteLine("Job Id: " + reader.GetString(4));
-                        }
+                        Console.WriteLine("Start Date : " + reader.GetDateTime(0));
+                        Console.WriteLine("Employee ID: " + reader.GetInt32(1));
+                        Console.WriteLine("End Date   : " + reader.GetDateTime(2));
+                        Console.WriteLine("Job        : " + reader.GetInt32(3));
+                        Console.WriteLine();
                     }
-                    else
-                    {
-                        Console.WriteLine("No histories found with the given ID.");
-                    }
-
-                    reader.Close();
-                    _connection.Close();
                 }
-                catch
+                else
                 {
-                    Console.WriteLine("Error connecting to the database.");
+                    Console.WriteLine("No job found.");
                 }
+
+                reader.Close();
+                //_connection.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error!" + ex.Message);
             }
         }
+        
     }
 }

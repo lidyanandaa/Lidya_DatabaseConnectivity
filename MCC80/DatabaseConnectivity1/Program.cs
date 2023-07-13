@@ -723,7 +723,7 @@ class Program
                 break;
 
             case 2:
-                Console.Write("Input Start Date (YYYY-MM-DD): ");
+                Console.Write("Tambah Start Date (YYYY-MM-DD): ");
                 string inStart = Console.ReadLine();
 
                 DateTime startDate;
@@ -737,15 +737,14 @@ class Program
                     return;
                 }
 
-                Console.Write("Input Employee Id: ");
+                Console.Write("Tambah Employee Id: ");
                 int inEmpID = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("Input End Date (YYYY-MM-DD): ");
+                Console.Write("Tambah End Date (YYYY-MM-DD): ");
                 string inEnd = Console.ReadLine();
                 DateTime endDate;
                 if (DateTime.TryParse(inEnd, out endDate))
                 {
-                    // Valid DateTime value
                     Console.WriteLine("End Date: " + endDate.ToString("yyyy-MM-dd"));
                 }
                 else
@@ -755,10 +754,10 @@ class Program
                     return; // Exit the method if the date is invalid
                 }
 
-                Console.Write("Input Departemen Id: ");
+                Console.Write("Tambah Department Id: ");
                 int inputDepID = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("Input Job Id: ");
+                Console.Write("Tambah Job Id: ");
                 string inJobID = Console.ReadLine();
                 Histories.InsertHistories(startDate, inEmpID, endDate, inputDepID, inJobID);
 
@@ -767,36 +766,66 @@ class Program
                 break;
 
             case 3:
-                Console.WriteLine("Update Id: ");
-                string uid = Console.ReadLine();
+                Console.Write("Update Start Date (YYYY-MM-DD): ");
+                string usd = Console.ReadLine();
 
-                Console.WriteLine("Update Title: ");
-                string utitle = Console.ReadLine();
+                DateTime ustartDate;
+                if (DateTime.TryParse(usd, out ustartDate))
+                {
+                    // Valid DateTime value
+                    Console.WriteLine("Start Date: " + ustartDate.ToString("yyyy-MM-dd"));
+                }
+                else
+                {
+                    // Invalid DateTime value
+                    Console.WriteLine("Invalid Start Date format. Please enter a valid date (YYYY-MM-DD).");
+                    return;
+                }
 
-                Console.WriteLine("Update Min Salary: ");
-                int umin = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Update Employee ID: ");
+                int ueid = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Update Max Salary: ");
-                int umax = Convert.ToInt32(Console.ReadLine());
-                //Histories.UpdateHistories(uid, utitle, umin, umax);
+                Console.Write("Update End Date (YYYY-MM-DD): ");
+                string ued = Console.ReadLine();
+
+                DateTime uendDate;
+                if (DateTime.TryParse(ued, out uendDate))
+                {
+                    // Valid DateTime value
+                    Console.WriteLine("End Date: " + uendDate.ToString("yyyy-MM-dd"));
+                }
+                else
+                {
+                    // Invalid DateTime value
+                    Console.WriteLine("Invalid End Date format. Please enter a valid date (YYYY-MM-DD).");
+                    return;
+                }
+
+                Console.Write("Update Department ID: ");
+                int udid = int.Parse(Console.ReadLine());
+
+                Console.Write("Update Job ID: ");
+                string ujid = Console.ReadLine();
+
+                Histories.UpdateHistories(ustartDate, ueid, uendDate, udid, ujid);
 
                 Console.WriteLine();
                 MenuHistories();
                 break;
 
             case 4:
-                Console.WriteLine("Id Jobs yang ingin dihapus: ");
-                string did = Console.ReadLine();
-                //Histories.DeletHistories(did);
+                Console.WriteLine("Id Employee yang ingin dihapus: ");
+                int heid = Convert.ToInt32(Console.ReadLine());
+                Histories.DeleteHistories(heid);
 
                 Console.WriteLine();
                 MenuHistories();
                 break;
 
             case 5:
-                Console.Write("Histories Id: ");
+                Console.Write("Employee Id: ");
                 int hid = Convert.ToInt32(Console.ReadLine());
-                //Histories.GetHistoriesById(hid);
+                Histories.GetHistoriesById(hid);
 
                 Console.WriteLine();
                 MenuHistories();
