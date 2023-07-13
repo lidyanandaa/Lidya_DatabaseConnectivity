@@ -89,13 +89,8 @@ namespace MVCArchitecture.Views
         public int DeleteMenu()
         {
             Console.WriteLine("Id Region yang ingin dihapus: ");
-            int deleter = Convert.ToInt32(Console.ReadLine());
-            return deleter;
-        }
-
-        public int SearchByIdMenu()
-        {
-            throw new NotImplementedException();
+            int id = Convert.ToInt32(Console.ReadLine());
+            return id;
         }
     }
 }

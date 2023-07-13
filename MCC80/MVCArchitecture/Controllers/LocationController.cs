@@ -8,98 +8,98 @@ using System.Threading.Tasks;
 
 namespace MVCArchitecture.Controllers
 {
-    public class RegionController
+    public class LocationController
     {
-        private Region _regionModel;
-        private VRegion _regionView;
+        private Location _locationModel;
+        private VLocations _locationView;
 
-        public RegionController(Region regionModel, VRegion regionView)
+        public LocationController(Location locationModel, VLocations locationView)
         {
-            _regionModel = regionModel;
-            _regionView = regionView;
+            _locationModel = locationModel;
+            _locationView = locationView;
         }
 
         public void GetAll()
         {
-            var result = _regionModel.GetAll();
+            var result = _locationModel.GetAll();
             if (result.Count is 0)
             {
-                _regionView.DataEmpty();
+                _locationView.DataEmpty();
             }
             else
             {
-                _regionView.GetAll(result);
+                _locationView.GetAll(result);
             }
         }
 
         public void Insert()
         {
-            var region = _regionView.InsertMenu();
+            var region = _locationView.InsertMenu();
 
-            var result = _regionModel.Insert(region);
+            var result = _locationModel.Insert(region);
             switch (result)
             {
                 case -1:
-                    _regionView.Error();
+                    _locationView.Error();
                     break;
                 case 0:
-                    _regionView.Failure();
+                    _locationView.Failure();
                     break;
                 default:
-                    _regionView.Success();
+                    _locationView.Success();
                     break;
             }
         }
 
         public void Update()
         {
-            var region = _regionView.UpdateMenu();
-            var result = _regionModel.Update(region);
+            var region = _locationView.UpdateMenu();
+            var result = _locationModel.Update(region);
 
             switch (result)
             {
                 case -1:
-                    _regionView.Error();
+                    _locationView.Error();
                     break;
                 case 0:
-                    _regionView.Failure();
+                    _locationView.Failure();
                     break;
                 default:
-                    _regionView.Success();
+                    _locationView.Success();
                     break;
             }
         }
 
         public void Delete()
         {
-            var region = _regionView.DeleteMenu();
-            var result = _regionModel.Delete(region);
+            var region = _locationView.DeleteMenu();
+            var result = _locationModel.Delete(region);
 
             switch (result)
             {
                 case -1:
-                    _regionView.Error();
+                    _locationView.Error();
                     break;
                 case 0:
-                    _regionView.Failure();
+                    _locationView.Failure();
                     break;
-                default: 
-                    _regionView.Success();
+                default:
+                    _locationView.Success();
                     break;
             }
         }
 
         public void GetById(int id)
         {
-            var region = _regionModel.GetById(id);
+            var region = _locationModel.GetById(id);
 
             if (region is null)
             {
-                _regionView.Failure();
+                _locationView.Failure();
             }
             else
             {
-                _regionView.GetById(region);
+                _locationView.GetById(region);
             }
         }
     }

@@ -63,7 +63,11 @@ public class Program
                         break;
                 }
             }
-            catch { Console.WriteLine("Input Hanya diantara 1-7!"); }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error:" + e);
+                Console.WriteLine("Input Hanya diantara 1-7!");
+            }
         } while (ulang);
     }
 
@@ -96,7 +100,9 @@ public class Program
                     PressAnyKey();
                     break;
                 case 5:
-                    regionController.GetById();
+                    Console.Write("Masukkan Id : ");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    regionController.GetById(id);
                     PressAnyKey();
                     break;
                 case 6:
@@ -121,7 +127,46 @@ public class Program
 
     private static void LocationMenu()
     {
+        Location location = new Location();
+        VLocations vLocation = new VLocations();
+        LocationController locationController = new LocationController(location, vLocation);
 
+        bool isTrue = true;
+        do
+        {
+            int pilihMenu = vLocation.Menu();
+            switch (pilihMenu)
+            {
+                case 1:
+                    locationController.GetAll();
+                    PressAnyKey();
+                    break;
+                case 2:
+                    locationController.Insert();
+                    PressAnyKey();
+                    break;
+                case 3:
+                    locationController.Update();
+                    PressAnyKey();
+                    break;
+                case 4:
+                    locationController.Delete();
+                    PressAnyKey();
+                    break;
+                case 5:
+                    Console.Write("Masukkan Id : ");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    locationController.GetById(id);
+                    PressAnyKey();
+                    break;
+                case 6:
+                    isTrue = false;
+                    break;
+                default:
+                    InvalidInput();
+                    break;
+            }
+        } while (isTrue);
     }
 
     private static void DepartmentMenu()
