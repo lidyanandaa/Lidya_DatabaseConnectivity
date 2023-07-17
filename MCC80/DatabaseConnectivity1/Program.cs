@@ -166,9 +166,10 @@ class Program
         Console.WriteLine("5. Get By Id");
         Console.WriteLine("6. Back");
         Console.WriteLine("======================");
-        Console.WriteLine("Input:");
+
+        Console.WriteLine("Masukkan no 1-6: ");
         int pilihregion = Convert.ToInt32(Console.ReadLine());
-        Console.Clear();
+
         switch (pilihregion)
         {
             case 1:

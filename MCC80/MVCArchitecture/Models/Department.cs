@@ -228,7 +228,7 @@ namespace MVCArchitecture.Models
                 reader.Close();
                 connection.Close();
 
-                return new Department();
+                return department;
             }
             catch
             {

@@ -20,6 +20,7 @@ namespace MVCArchitecture.Models
 
             var regions = new List<Region>();
 
+
             using SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.Connection = connection;
             sqlCommand.CommandText = "SELECT * FROM REGIONS";
@@ -132,13 +133,13 @@ namespace MVCArchitecture.Models
         }
 
         //DELETE REGION
-        public int Delete(int id)
+        public int Delete(Region region)
         {
             var connection = Connection.Get();
 
             SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.Connection = connection;
-            sqlCommand.CommandText = "DELETE FROM REGIONS WHERE region_id = @region_id";
+            sqlCommand.CommandText = "DELETE FROM REGIONS WHERE id = @region_id";
 
             connection.Open();
             SqlTransaction transaction = connection.BeginTransaction();
@@ -148,7 +149,7 @@ namespace MVCArchitecture.Models
                 SqlParameter pRegionId = new SqlParameter();
                 pRegionId.ParameterName = "@region_id";
                 pRegionId.SqlDbType = System.Data.SqlDbType.Int;
-                pRegionId.Value = id;
+                pRegionId.Value = region.Id;
                 sqlCommand.Parameters.Add(pRegionId);
 
                 int result = sqlCommand.ExecuteNonQuery();
@@ -174,7 +175,8 @@ namespace MVCArchitecture.Models
 
             SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.Connection = connection;
-            sqlCommand.CommandText = "SELECT * FROM REGIONS WHERE region_id = @region_id";
+            sqlCommand.CommandText = "SELECT * FROM REGIONS WHERE id = @region_id";
+
             sqlCommand.Parameters.AddWithValue("@region_id", id);
 
             try
@@ -184,7 +186,6 @@ namespace MVCArchitecture.Models
                 if (reader.HasRows)
                 {
                     reader.Read();
-
                     region.Id = reader.GetInt32(0);
                     region.Name = reader.GetString(1);
                 }
@@ -192,7 +193,7 @@ namespace MVCArchitecture.Models
                 reader.Close();
                 connection.Close();
 
-                return new Region();
+               return region;
             }
             catch
             {

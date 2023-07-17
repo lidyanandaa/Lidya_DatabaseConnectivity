@@ -189,24 +189,6 @@ namespace MVCArchitecture.Models
                 pId.Value = id;
                 sqlCommand.Parameters.Add(pId);
 
-                SqlParameter pTitle = new SqlParameter();
-                pTitle.ParameterName = "@title";
-                pTitle.SqlDbType = System.Data.SqlDbType.VarChar;
-                pTitle.Value = title;
-                sqlCommand.Parameters.Add(pTitle);
-
-                SqlParameter pMinSalary = new SqlParameter();
-                pMinSalary.ParameterName = "@min";
-                pMinSalary.SqlDbType = System.Data.SqlDbType.Int;
-                pMinSalary.Value = min_salary;
-                sqlCommand.Parameters.Add(pMinSalary);
-
-                SqlParameter pMaxSalary = new SqlParameter();
-                pMaxSalary.ParameterName = "@max";
-                pMaxSalary.SqlDbType = System.Data.SqlDbType.Int;
-                pMaxSalary.Value = max_salary;
-                sqlCommand.Parameters.Add(pMaxSalary);
-
                 int result = sqlCommand.ExecuteNonQuery();
 
                 transaction.Commit();
@@ -250,7 +232,7 @@ namespace MVCArchitecture.Models
                 reader.Close();
                 connection.Close();
 
-                return new Job();
+                return job;
             }
             catch
             {

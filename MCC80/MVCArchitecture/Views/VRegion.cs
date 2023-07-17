@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MVCArchitecture.Views
 {
@@ -86,11 +87,17 @@ namespace MVCArchitecture.Views
             };
         }
 
-        public int DeleteMenu()
+        public Region DeleteMenu()
         {
             Console.WriteLine("Id Region yang ingin dihapus: ");
             int id = Convert.ToInt32(Console.ReadLine());
-            return id;
+            //return id;
+
+            return new Region
+            {
+                Id = id,
+                Name =  ""
+            };
         }
     }
 }

@@ -259,7 +259,7 @@ namespace MVCArchitecture.Models
                 reader.Close();
                 connection.Close();
 
-                return new Location();
+                return location;
             }
             catch
             {
